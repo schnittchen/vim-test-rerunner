@@ -7,6 +7,7 @@ endfunction
 function! IndexOfMatchingRunner(filename)
   let index = 0
   let filename = a:filename
+  let shell_filename = shellescape(filename)
   for runner in g:test_runners
     let test_value = eval(runner[0])
     if test_value
@@ -20,6 +21,7 @@ endfunction
 function! RunTestFile(filename)
   let index = IndexOfMatchingRunner(a:filename)
   let filename = a:filename
+  let shell_filename = shellescape(filename)
   execute g:test_runners[index][1]
 endfunction
 
