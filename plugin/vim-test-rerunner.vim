@@ -18,19 +18,17 @@ function! IndexOfMatchingRunner(filename)
 endfunction
 
 function! RunTestFile(filename)
+  let index = IndexOfMatchingRunner(a:filename)
   let filename = a:filename
-  for runner in g:test_runners
-    let vs = "if " . runner[0] . "\nexecute runner[1]\nreturn 1\nendif"
-    execute vs
-  endfor
+  execute g:test_runners[index][1]
 endfunction
 
 function! IsTestFile(filename)
-  let filename = a:filename
-  for runner in g:test_runners
-    let vs = "if " . runner[0] . "\nreturn 1\nendif"
-    execute vs
-  endfor
+  if IndexOfMatchingRunner(a:filename) == -1
+    return 0
+  else
+    return 1
+  endif
 endfunction
 
 function! RerunLastTest()
