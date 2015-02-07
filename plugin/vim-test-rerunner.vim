@@ -4,6 +4,19 @@ function! DefineTestRunner(test_string, run_string)
   let g:test_runners = g:test_runners + [[a:test_string, a:run_string]]
 endfunction
 
+function! IndexOfMatchingRunner(filename)
+  let index = 0
+  let filename = a:filename
+  for runner in g:test_runners
+    let test_value = eval(runner[0])
+    if test_value
+      return index
+    endif
+    let index = index + 1
+  endfor
+  return -1
+endfunction
+
 function! RunTestFile(filename)
   let filename = a:filename
   for runner in g:test_runners
