@@ -4,7 +4,7 @@ function! DefineTestRunner(test_string, run_string)
   let s:test_runners = s:test_runners + [[a:test_string, a:run_string]]
 endfunction
 
-function! IndexOfMatchingRunner(filename)
+function! s:indexOfMatchingRunner(filename)
   let index = 0
   let filename = a:filename
   let shell_filename = shellescape(filename)
@@ -18,39 +18,39 @@ function! IndexOfMatchingRunner(filename)
   return -1
 endfunction
 
-function! RunTestFile(filename)
-  let index = IndexOfMatchingRunner(a:filename)
+function! s:runTestFile(filename)
+  let index = s:indexOfMatchingRunner(a:filename)
   let filename = a:filename
   let shell_filename = shellescape(filename)
   execute s:test_runners[index][1]
 endfunction
 
-function! IsTestFile(filename)
-  if IndexOfMatchingRunner(a:filename) == -1
+function! s:isTestFile(filename)
+  if s:indexOfMatchingRunner(a:filename) == -1
     return 0
   else
     return 1
   endif
 endfunction
 
-function! RerunLastTest()
+function! s:rerunLastTest()
   if exists("s:last_test_file")
-    call RunTestFile(s:last_test_file)
+    call s:runTestFile(s:last_test_file)
   else
     echo "Error: No previous test file."
   endif
 endfunction
 
-function! RunTestFileOrRerunLast()
+function! s:runTestFileOrRerunLast()
   let file = expand('%:')
-  if IsTestFile(file)
+  if s:isTestFile(file)
     let s:last_test_file=file
   endif
-  call RerunLastTest()
+  call s:rerunLastTest()
 endfunction
 
 
-command! RunTestFileOrRerunLast  call RunTestFileOrRerunLast()
+command! RunTestFileOrRerunLast  call s:runTestFileOrRerunLast()
 
 "" example configuration:
 " call DefineTestRunner("filename =~ '_spec.rb'", "exec '!rspec ' .  shell_filename")
