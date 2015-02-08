@@ -1,14 +1,14 @@
-let g:test_runners = []
+let s:test_runners = []
 
 function! DefineTestRunner(test_string, run_string)
-  let g:test_runners = g:test_runners + [[a:test_string, a:run_string]]
+  let s:test_runners = s:test_runners + [[a:test_string, a:run_string]]
 endfunction
 
 function! IndexOfMatchingRunner(filename)
   let index = 0
   let filename = a:filename
   let shell_filename = shellescape(filename)
-  for runner in g:test_runners
+  for runner in s:test_runners
     let test_value = eval(runner[0])
     if test_value
       return index
@@ -22,7 +22,7 @@ function! RunTestFile(filename)
   let index = IndexOfMatchingRunner(a:filename)
   let filename = a:filename
   let shell_filename = shellescape(filename)
-  execute g:test_runners[index][1]
+  execute s:test_runners[index][1]
 endfunction
 
 function! IsTestFile(filename)
@@ -34,8 +34,8 @@ function! IsTestFile(filename)
 endfunction
 
 function! RerunLastTest()
-  if exists("g:last_test_file")
-    call RunTestFile(g:last_test_file)
+  if exists("s:last_test_file")
+    call RunTestFile(s:last_test_file)
   else
     echo "Error: No previous test file."
   endif
@@ -44,7 +44,7 @@ endfunction
 function! RunTestFileOrRerunLast()
   let file = expand('%:')
   if IsTestFile(file)
-    let g:last_test_file=file
+    let s:last_test_file=file
   endif
   call RerunLastTest()
 endfunction
