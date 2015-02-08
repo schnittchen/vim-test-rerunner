@@ -51,3 +51,7 @@ endfunction
 
 
 command! RunTestFileOrRerunLast  call RunTestFileOrRerunLast()
+
+"" example configuration:
+" call DefineTestRunner("filename =~ '_spec.rb'", "exec '!rspec ' .  shell_filename")
+
